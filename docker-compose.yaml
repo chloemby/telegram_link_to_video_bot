@@ -1,0 +1,8 @@
+version: "3"
+services:
+  app:
+    container_name: telegram_link_to_video_bot
+    build: .
+    env_file:
+      - .env
+
