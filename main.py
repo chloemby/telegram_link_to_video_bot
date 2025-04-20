@@ -3,21 +3,26 @@ import logging
 import os
 import random
 import sys
+from os import getenv
 from urllib.parse import urlparse
 
+import yaml
 from yt_dlp import YoutubeDL
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import Message, FSInputFile
 
-TOKEN = os.getenv('BOT_TOKEN')
+config = yaml.safe_load(open('config.yaml'))['config']
 dp = Dispatcher()
 
 
 @dp.message()
 async def handle_chat_message(message: Message):
     url = urlparse(message.text)
+    if message.from_user.username not in config['allowed_users']:
+        return
+
     if url.scheme == '':
         # not url message
         return
@@ -47,10 +52,9 @@ def download_instagram_reel(url, filepath):
         print(f"❌ Error: {e}")
 
 
-
 async def main() -> None:
     # Initialize Bot instance with default bot properties which will be passed to all API calls
-    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(token=config['bot_token'], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
     # And the run events dispatching
     await dp.start_polling(bot)

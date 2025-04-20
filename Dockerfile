@@ -1,8 +1,8 @@
-from alpine:3.9
+from python:3.9
 
 WORKDIR /app
 
 COPY requirements.txt .
 COPY main.py .
 
-RUN pip insttall -r requirements.txt
+RUN pip install -r requirements.txt

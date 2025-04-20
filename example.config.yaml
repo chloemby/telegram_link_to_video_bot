@@ -1,0 +1,4 @@
+config:
+  bot_token: test
+  allowed_users:
+    - chloemby
