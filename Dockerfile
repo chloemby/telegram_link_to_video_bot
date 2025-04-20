@@ -2,6 +2,7 @@ from python:3.9
 
 WORKDIR /app
 
+COPY config.yaml .
 COPY requirements.txt .
 COPY main.py .
 
