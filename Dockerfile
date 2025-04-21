@@ -5,6 +5,6 @@ WORKDIR /bot
 COPY config.yaml .
 COPY requirements.txt .
 COPY main.py .
-COPY app .
+COPY app app
 
 RUN pip install -r requirements.txt
