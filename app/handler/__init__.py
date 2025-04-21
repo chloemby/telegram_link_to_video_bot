@@ -1,2 +1,3 @@
-from .instagram_video_download import router as InstagramVideoDownloadRouter
-from .dota_time import router as DotatimeRouter
+from .router import router
+from .dota_time import *
+from .instagram_video_download import *

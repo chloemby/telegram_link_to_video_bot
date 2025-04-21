@@ -1,14 +1,11 @@
 import os
 import random
 
-from aiogram import Router
 from aiogram.types import Message, FSInputFile
 
 from app.middleware import PermissionsMiddleware, InstagramVideoDownloadMiddleware
 from app.service import InstagramReelsDownloadService
-
-
-router = Router()
+from app.handler import router
 
 @router.message(PermissionsMiddleware(), InstagramVideoDownloadMiddleware())
 async def handler(message: Message):

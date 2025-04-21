@@ -4,9 +4,7 @@ from aiogram.types import Message
 
 from app.config import Config
 from app.middleware import PermissionsMiddleware, DotatimeMiddleware
-
-
-router = Router()
+from app.handler import router
 
 @router.message(
     PermissionsMiddleware(),
