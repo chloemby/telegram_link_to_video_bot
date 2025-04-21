@@ -1,14 +1,14 @@
 from yt_dlp import YoutubeDL
 
 
-class Service():
+class Service:
     __CONTENT_DIR = 'content'
     __FORMAT = 'mp4'
 
-    def download(self, url: str):
+    def download(self, url: str, filename: str):
         ydl_opts = {
             'format': self.__FORMAT,
-            'outtmpl': self.__CONTENT_DIR,
+            'outtmpl': f'{self.__CONTENT_DIR}/{filename}',
             'merge_output_format': self.__FORMAT,
             'quiet': False,
         }
