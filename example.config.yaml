@@ -1,4 +1,7 @@
 config:
+  dotatime_chat: chat
   bot_token: test
   allowed_users:
+    - chloemby
+  dota_players:
     - chloemby

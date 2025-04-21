@@ -1,60 +1,26 @@
 import asyncio
 import logging
-import os
-import random
 import sys
-from os import getenv
-from urllib.parse import urlparse
 
-import yaml
-from yt_dlp import YoutubeDL
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import Message, FSInputFile
+from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats
 
-config = yaml.safe_load(open('config.yaml'))['config']
+import app.handler as handlers
+import app.config
+
 dp = Dispatcher()
 
-
-@dp.message()
-async def handle_chat_message(message: Message):
-    url = urlparse(message.text)
-    if message.from_user.username not in config['allowed_users']:
-        return
-
-    if url.scheme == '':
-        # not url message
-        return
-
-    if url.netloc.endswith('instagram.com') and url.path.startswith('/reel/'):
-        filename = f'content/{random.randint(0, 1000000000)}.mp4'
-        download_instagram_reel(message.text, filename)
-
-        await message.bot.send_video(chat_id=message.chat.id, reply_to_message_id=message.message_id, video=FSInputFile(path=filename))
-
-        os.remove(filename)
-
-
-def download_instagram_reel(url, filepath):
-    # Configure yt-dlp to download the best available quality
-    ydl_opts = {
-        'format': 'mp4',  # Highest video and audio quality
-        'outtmpl': filepath, # Save to Colab's content directory
-        'merge_output_format': 'mp4',  # Output format
-        'quiet': False,  # Show download progress
-    }
-
-    try:
-        with YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-    except Exception as e:
-        print(f"❌ Error: {e}")
-
+dp.include_routers(handlers.instagram_video_download.router, handlers.dota_time.router)
 
 async def main() -> None:
     # Initialize Bot instance with default bot properties which will be passed to all API calls
-    bot = Bot(token=config['bot_token'], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(token=app.config.Config.get_bot_token(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
+    await bot.set_my_commands(scope=BotCommandScopeAllPrivateChats(), commands=[
+        BotCommand(command='/dotatime', description='Позвать пацанов в доту'),
+    ])
 
     # And the run events dispatching
     await dp.start_polling(bot)
