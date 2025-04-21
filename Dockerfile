@@ -1,6 +1,6 @@
 from python:3.9
 
-WORKDIR /app
+WORKDIR /bot
 
 COPY config.yaml .
 COPY requirements.txt .
