@@ -8,7 +8,7 @@ from app.handler import router
 
 @router.message(PermissionsMiddleware(), InstagramVideoDownloadMiddleware())
 async def handler(message: Message):
-    filename = InstagramReelsDownloadService.download(message.text, filename)
+    filename = InstagramReelsDownloadService.download(message.text)
 
     await message.bot.send_video(chat_id=message.chat.id, reply_to_message_id=message.message_id, video=FSInputFile(path=filename))
 
