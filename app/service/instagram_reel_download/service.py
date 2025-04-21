@@ -1,14 +1,17 @@
+from random import randint
+
 from yt_dlp import YoutubeDL
 
 
 class Service:
-    __CONTENT_DIR = 'content'
     __FORMAT = 'mp4'
 
-    def download(self, url: str, filename: str):
+    def download(self, url: str) -> str:
+        filename = f'content/{randint(0, 1000000000)}.mp4'
+
         ydl_opts = {
             'format': self.__FORMAT,
-            'outtmpl': f'{self.__CONTENT_DIR}/{filename}',
+            'outtmpl': filename,
             'merge_output_format': self.__FORMAT,
             'quiet': False,
         }
